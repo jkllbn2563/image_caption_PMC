@@ -140,15 +140,10 @@ data['bounds'] = {'it_pos_now': 0, 'it_max': 1, 'wrapped': True}
 data['infos'] = infos
 
 
-
 def image_captioning_body(img):
-
-    #img = skimage.io.imread(opt.image)
-    #img = skimage.io.imread('silicon_test_images/cellphone.jpg')
     if (img.shape[0]==2):
         img = img[0]
     print (img.shape)
-
 
     fc_batch = np.ndarray((batch_size, 2048), dtype = 'float32')
     att_batch = np.ndarray((batch_size, 14, 14, 2048), dtype = 'float32')
@@ -158,12 +153,7 @@ def image_captioning_body(img):
 
     img = img.astype('float32')/255.0
     img = torch.from_numpy(img.transpose([2, 0, 1]))
-    '''
-    if use_cuda==False:
-        img = torch.from_numpy(img.transpose([2, 0, 1]))
-    else:
-        img = torch.from_numpy(img.transpose([2, 0, 1])).cuda()
-    '''
+
     with torch.no_grad():
         img = Variable(preprocess(img))
         if use_cuda==True:
@@ -192,22 +182,17 @@ def image_captioning_body(img):
     print (sents)
     return sents[0]
 
+
 def handle_function(req):
     print ('start to handle image captioning service')
     print (req.robot_view.height)
     cv_image = bridge.imgmsg_to_cv2(req.robot_view, desired_encoding="passthrough")
-    #print (cv_image.shape)
-
-   # cv2.imshow('frame',cv_image)
-   # cv2.waitKey(0)
-   # cv2.destroyAllWindows()
-
     sents = image_captioning_body(cv_image)
 
     return imageCaptioningResponse(sents)
 
 
-rospy.init_node('caption_server',anonymous=True)
+rospy.init_node('caption_server',anonymous=False)
 s=rospy.Service('image_caption',imageCaptioning,handle_function)
 rospy.loginfo('Ready to caption')
 rospy.spin()
