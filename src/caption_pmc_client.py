@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 import rospy
-from caption_pkg.srv import *
 from cv_bridge import CvBridge, CvBridgeError
+
+from caption_pkg.srv import *
 from sensor_msgs.msg import Image
 from std_srvs.srv import Trigger, TriggerResponse
-import time
+
 
 bridge = CvBridge()
 caption = None
@@ -37,11 +38,13 @@ def executeCaption(req):
 
 if __name__=='__main__':
 	rospy.init_node('client_caption_node',anonymous=True)
+	image_caption_image_topic = "/"+rospy.get_param("image_caption_image_topic")
 
 	# receice images
-	rospy.Subscriber("/scorpio/mmp0/base_camera/rgb/image_raw",Image,rgb_callback)
+	rospy.Subscriber(image_caption_image_topic,Image,rgb_callback)
 	while img == None:
-		time.sleep(0.1)
+		rospy.loginfo('Waiting for images...')
+		rospy.sleep(0.5)
 
 	# connect to image_caption service
 	rospy.wait_for_service('image_caption')
@@ -50,5 +53,5 @@ if __name__=='__main__':
 	# create triggerCaption server for main state machine trigger
 	triggerCaption_server=rospy.Service('triggerCaption',Trigger,executeCaption)
 
-	rospy.loginfo('Ready to caption...')
+	rospy.loginfo('Caption client is ready to caption...')
 	rospy.spin()
