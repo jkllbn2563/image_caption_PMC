@@ -18,7 +18,6 @@ import rospy
 from caption_pkg.srv import *
 from cv_bridge import CvBridge,CvBridgeError
 from io import StringIO
-from matplotlib import pyplot as plt
 from PIL import Image
 bridge = CvBridge()
 
@@ -176,7 +175,7 @@ def image_captioning_body(img):
     data['fc_feats'] = fc_batch
     data['att_feats'] = att_batch
 
-    tmp = [data['fc_feats'][np.arange(batch_size)], 
+    tmp = [data['fc_feats'][np.arange(batch_size)],
         data['att_feats'][np.arange(batch_size)]]
 
     with torch.no_grad():
@@ -198,11 +197,11 @@ def handle_function(req):
     print (req.robot_view.height)
     cv_image = bridge.imgmsg_to_cv2(req.robot_view, desired_encoding="passthrough")
     #print (cv_image.shape)
-    
+
    # cv2.imshow('frame',cv_image)
    # cv2.waitKey(0)
    # cv2.destroyAllWindows()
-    
+
     sents = image_captioning_body(cv_image)
 
     return imageCaptioningResponse(sents)
@@ -211,4 +210,4 @@ def handle_function(req):
 rospy.init_node('caption_server',anonymous=True)
 s=rospy.Service('image_caption',imageCaptioning,handle_function)
 rospy.loginfo('Ready to caption')
-rospy.spin()    
+rospy.spin()
