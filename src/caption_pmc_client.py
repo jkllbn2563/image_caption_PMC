@@ -5,11 +5,13 @@ from cv_bridge import CvBridge, CvBridgeError
 from caption_pkg.srv import *
 from sensor_msgs.msg import Image
 from std_srvs.srv import Trigger, TriggerResponse
+from std_msgs.msg import String
 
-
+caption_client = None
 bridge = CvBridge()
 caption = None
 img = None
+pub = None
 
 
 def rgb_callback(image):
@@ -18,7 +20,7 @@ def rgb_callback(image):
 
 
 def caption_calculation():
-	global img,caption
+	global img,caption, caption_client
 	try:
 		caption=caption_client(img)
 	except rospy.ServiceException, e:
@@ -26,9 +28,10 @@ def caption_calculation():
 
 
 def executeCaption(req):
-	global caption
+	global caption,pub
 	caption_calculation()
-	rospy.sleep(1.)
+	pub.publish(String(str(caption.caption_result)))
+	rospy.sleep(3.)
 
 	return TriggerResponse(
         success=True,
@@ -36,7 +39,8 @@ def executeCaption(req):
     )
 
 
-if __name__=='__main__':
+def main():
+	global pub, caption_client
 	rospy.init_node('client_caption_node',anonymous=True)
 	image_caption_image_topic = "/"+rospy.get_param("image_caption_image_topic")
 
@@ -53,5 +57,12 @@ if __name__=='__main__':
 	# create triggerCaption server for main state machine trigger
 	triggerCaption_server=rospy.Service('triggerCaption',Trigger,executeCaption)
 
+	# vocal part
+	pub = rospy.Publisher('response', String, queue_size=10)
+
 	rospy.loginfo('Caption client is ready to caption...')
 	rospy.spin()
+
+
+if __name__=='__main__':
+    main()
