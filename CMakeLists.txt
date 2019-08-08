@@ -58,6 +58,7 @@ find_package(catkin REQUIRED COMPONENTS
  add_service_files(
    FILES
    imageCaptioning.srv
+   PMC_trigger.srv
    
  )
 
