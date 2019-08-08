@@ -21,17 +21,18 @@ from io import StringIO
 from PIL import Image
 bridge = CvBridge()
 
+rospy.init_node('caption_server',anonymous=False)
+model_path = rospy.get_param("model_path")
+infos_path = rospy.get_param("infos_path")
+imagenet_weights_path = rospy.get_param("imagenet_weights_path")
+
 # Input arguments and options
 parser = argparse.ArgumentParser()
 # Input paths
-parser.add_argument('--model', type=str, default='log_st/model-best.pth',
-                    help='path to model to evaluate')
 parser.add_argument('--image', type=str, default='',
                     help='test image')
 parser.add_argument('--cnn_model', type=str,  default='resnet101',
                     help='resnet101, resnet152')
-parser.add_argument('--infos_path', type=str, default='log_st/infos_st-best.pkl',
-                    help='path to infos to evaluate')
 #parser.add_argument('--infos_path', type=str, default='no_finetune_pre-trained_models/topdown/infos_td-best.pkl',
 #                    help='path to infos to evaluate')
 # Basic options
@@ -77,7 +78,8 @@ parser.add_argument('--coco_json', type=str, default='',
 parser.add_argument('--id', type=str, default='',
                     help='an id identifying this run/job. used only if language_eval = 1 for appending to intermediate files')
 
-opt = parser.parse_args()
+opt, unknown = parser.parse_known_args() # because roslaunch would give it unrecognized args
+#opt = parser.parse_args()
 use_cuda = False
 if torch.cuda.is_available():
     use_cuda = True
@@ -89,7 +91,7 @@ preprocess = trn.Compose([
 ])
 
 # Load infos
-with open(opt.infos_path, 'rb') as f:
+with open(infos_path, 'rb') as f:
     infos = cPickle.load(f)
 
 
@@ -117,14 +119,14 @@ vocab = infos['vocab'] # ix -> word mapping
 
 model = models.setup(opt)
 if use_cuda == False:
-    model.load_state_dict(torch.load(opt.model,map_location='cpu'))
+    model.load_state_dict(torch.load(model_path,map_location='cpu'))
 else:
-    model.load_state_dict(torch.load(opt.model))
+    model.load_state_dict(torch.load(model_path))
     model.cuda()
 model.eval()
 
 my_resnet = getattr(misc.resnet, 'resnet101')()
-my_resnet.load_state_dict(torch.load('./data/imagenet_weights/'+'resnet101'+'.pth'))
+my_resnet.load_state_dict(torch.load(imagenet_weights_path))
 my_resnet = myResnet(my_resnet)
 if use_cuda:
     my_resnet.cuda()
@@ -192,7 +194,6 @@ def handle_function(req):
     return imageCaptioningResponse(sents)
 
 
-rospy.init_node('caption_server',anonymous=False)
 s=rospy.Service('image_caption',imageCaptioning,handle_function)
-rospy.loginfo('Ready to caption')
+rospy.loginfo('Caption server is ready to caption...')
 rospy.spin()
