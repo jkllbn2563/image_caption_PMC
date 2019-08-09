@@ -4,9 +4,10 @@ from caption_pkg.srv import *
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 import time
+import warnings
 caption_result=""
 bridge = CvBridge()
-
+warnings.filterwarnings("ignore")
 img = None
 
 def rgb_callback(image):

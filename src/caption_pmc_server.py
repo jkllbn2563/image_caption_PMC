@@ -13,7 +13,7 @@ import skimage
 from torchvision import transforms as trn
 from misc.resnet_utils import myResnet
 import misc.resnet
-
+import warnings
 import rospy
 from caption_pkg.srv import *
 from cv_bridge import CvBridge,CvBridgeError
@@ -21,6 +21,7 @@ from io import StringIO
 from matplotlib import pyplot as plt
 from PIL import Image
 bridge = CvBridge()
+warnings.filterwarnings("ignore")
 
 # Input arguments and options
 parser = argparse.ArgumentParser()
