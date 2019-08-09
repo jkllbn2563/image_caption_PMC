@@ -145,7 +145,7 @@ data['infos'] = infos
 def image_captioning_body(img):
     if (img.shape[0]==2):
         img = img[0]
-    print (img.shape)
+    #print (img.shape)
 
     fc_batch = np.ndarray((batch_size, 2048), dtype = 'float32')
     att_batch = np.ndarray((batch_size, 14, 14, 2048), dtype = 'float32')
@@ -181,13 +181,13 @@ def image_captioning_body(img):
 
     seq = seq.cpu().numpy()
     sents = utils.decode_sequence(vocab, seq)
-    print (sents)
+    #print (sents)
     return sents[0]
 
 
 def handle_function(req):
-    print ('start to handle image captioning service')
-    print (req.robot_view.height)
+    #print ('start to handle image captioning service')
+    #print (req.robot_view.height)
     cv_image = bridge.imgmsg_to_cv2(req.robot_view, desired_encoding="passthrough")
     sents = image_captioning_body(cv_image)
 
@@ -195,5 +195,5 @@ def handle_function(req):
 
 
 s=rospy.Service('image_caption',imageCaptioning,handle_function)
-rospy.loginfo('Caption server is ready to caption...')
+rospy.logwarn('Caption server is ready to caption...')
 rospy.spin()

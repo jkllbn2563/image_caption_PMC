@@ -31,6 +31,7 @@ def executeCaption(req):
 	global caption,pub
 	caption_calculation()
 	pub.publish(String(str(caption.caption_result)))
+	rospy.logwarn("captioning:: %s",str(caption.caption_result))
 	rospy.sleep(3.)
 
 	return TriggerResponse(
@@ -60,7 +61,7 @@ def main():
 	# vocal part
 	pub = rospy.Publisher('response', String, queue_size=10)
 
-	rospy.loginfo('Caption client is ready to caption...')
+	rospy.logwarn('Caption client is ready to caption...')
 	rospy.spin()
 
 
