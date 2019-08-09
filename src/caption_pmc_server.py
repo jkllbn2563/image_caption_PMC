@@ -19,7 +19,10 @@ from caption_pkg.srv import *
 from cv_bridge import CvBridge,CvBridgeError
 from io import StringIO
 from PIL import Image
+import warnings
 bridge = CvBridge()
+warnings.filterwarnings("ignore")
+
 
 rospy.init_node('caption_server',anonymous=False)
 model_path = rospy.get_param("model_path")
