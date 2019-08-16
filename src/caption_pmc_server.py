@@ -25,7 +25,7 @@ warnings.filterwarnings("ignore")
 
 
 rospy.init_node('caption_server',anonymous=False)
-model_path = rospy.get_param("model_path")
+model_path = rospy.get_param("caption_model_path")
 infos_path = rospy.get_param("infos_path")
 imagenet_weights_path = rospy.get_param("imagenet_weights_path")
 
