@@ -13,7 +13,7 @@ import skimage
 from torchvision import transforms as trn
 from misc.resnet_utils import myResnet
 import misc.resnet
-
+import pickle
 import rospy
 from caption_pkg.srv import *
 from cv_bridge import CvBridge,CvBridgeError
@@ -94,7 +94,7 @@ preprocess = trn.Compose([
 ])
 
 # Load infos
-with open(infos_path, 'rb') as f:
+with open(infos_path,'rb') as f:
     infos = cPickle.load(f)
 
 
