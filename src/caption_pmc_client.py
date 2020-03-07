@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 import rospy
 from cv_bridge import CvBridge, CvBridgeError
 
@@ -50,6 +50,8 @@ def main():
 	while img == None:
 		rospy.loginfo('Waiting for images...')
 		rospy.sleep(0.5)
+		if rospy.is_shutdown():
+			exit(-1)
 
 	# connect to image_caption service
 	rospy.wait_for_service('image_caption')
