@@ -6,10 +6,13 @@ python sam_new_dataset_json_file_with_val.py --output_json sam_new_dataset_refer
 python scripts/prepro_labels.py --input_json sam_new_dataset/sam_new_dataset_reference.json --output_json sam_new_dataset/cocotalk_sam_new_dataset_reference.json --output_h5 sam_new_dataset/cocotalk_sam_new_dataset_reference --word_count_threshold 0
 #產生 cocotalk_sam_new_dataset_reference.json  cocotalk_sam_new_dataset_reference_label.h5
 
-python scripts/prepro_labels_assign_vocab.py --input_json sam_new_dataset/sam_new_dataset_reference.json --output_json sam_new_dataset/cocotalk_sam_new_dataset_reference.json --output_h5 sam_new_dataset/cocotalk_sam_new_dataset_reference --word_count_threshold 0
+python scripts/prepro_labels_assign_vocab.py --input_json sam_new_dataset/sam_new_dataset_reference.json --output_json sam_new_dataset/cocotalk_sam_new_dataset_reference.json --output_h5 sam_new_dataset/cocotalk_sam_new_dataset_reference --
+word_count_threshold 0
+
 #產生 cocotalk_sam_new_dataset_reference.json  cocotalk_sam_new_dataset_reference_label.h5
 
 export NEW_DATASET_IMAGE_DIR=$HOME/code/python/pytorch/image_caption/ruotianluo_image_captioning_pytorch/sam_new_dataset/images
+
 python scripts/prepro_feats.py --input_json sam_new_dataset/sam_new_dataset_reference.json --output_dir sam_new_dataset/cocotalk_sam_new_dataset --images_root $NEW_DATASET_IMAGE_DIR
 #產生 coco_talk_att coco_talk_fc
 
