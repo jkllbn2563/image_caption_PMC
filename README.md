@@ -1,6 +1,7 @@
 # image_caption_PMC
 圖片放在 /sam_new_dataset/images
 label 在 sam_new_dataset_reference_with_val.txt
+
 python sam_new_dataset_json_file_with_val.py --output_json sam_new_dataset_reference.json 產生 sam_new_dataset_reference.json #產生 cocotalk.json格式的檔案
 
 python scripts/prepro_labels.py --input_json sam_new_dataset/sam_new_dataset_reference.json --output_json sam_new_dataset/cocotalk_sam_new_dataset_reference.json --output_h5 sam_new_dataset/cocotalk_sam_new_dataset_reference --word_count_threshold 0
