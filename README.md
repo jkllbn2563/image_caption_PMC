@@ -27,9 +27,15 @@ ALT+F2: xkill
 python fine_tune.py --output_json coco_append.json 產生 coco_append.json #產生 cocotalk.json格式的檔案 remember dataset_coco.json in bak.json dir
 
 python scripts/prepro_labels.py --input_json sam_new_dataset/sam_new_dataset_reference.json --output_json sam_new_dataset/cocotalk_sam_new_dataset_reference.json --output_h5 sam_new_dataset/cocotalk_sam_new_dataset_reference --word_count_threshold 0
+
 ###產生 cocotalk_sam_new_dataset_reference.json  cocotalk_sam_new_dataset_reference_label.h5
+
 ###export NEW_DATASET_IMAGE_DIR=/media/jkllbn2563/20ea5ca3-ac85-48bf-831d-06ebe29cef77/data/train_val2014
-sudo python scripts/prepro_feats.py --input_json /home/jkllbn2563/catkin_ws/src/scorpio_v2/image_caption_PMC/src/sam_new_dataset/coco_append.json --output_dir /home/jkllbn2563/catkin_ws/src/scorpio_v2/image_caption_PMC/src/sam_new_dataset/cocotalk_sam_new_dataset --images_root $NEW_DATASET_IMAGE_DIR      at ~/code/python/pytorch/self-critical.pytorch
+
+sudo python scripts/prepro_feats.py --input_json /home/jkllbn2563/catkin_ws/src/scorpio_v2/image_caption_PMC/src/sam_new_dataset/coco_append.json --output_dir /home/jkllbn2563/catkin_ws/src/scorpio_v2/image_caption_PMC/src/sam_new_dataset/cocotalk_sam_new_dataset --images_root
+
+$NEW_DATASET_IMAGE_DIR      at ~/code/python/pytorch/self-critical.pytorch
+
 ####產生 coco_talk_att coco_talk_fc
 
 ~/code/python/pytorch/self-critical.pytorch$ python train.py --cfg configs/updown.yml --id updown
