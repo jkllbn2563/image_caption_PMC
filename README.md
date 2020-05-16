@@ -39,3 +39,12 @@ $NEW_DATASET_IMAGE_DIR      at ~/code/python/pytorch/self-critical.pytorch
 ####產生 coco_talk_att coco_talk_fc
 
 ~/code/python/pytorch/self-critical.pytorch$ python train.py --cfg configs/updown.yml --id updown
+
+
+＃＃＃強化學習
+
+python scripts/prepro_ngrams.py --input_json data/coco_append.json --dict_json /home/jkllbn2563/catkin_ws/src/scorpio_v2/image_caption_PMC/src/sam_new_dataset/cocotalk_sam_new_dataset_reference.json --output_pkl data/coco-train --split train
+
+bash scripts/copy_model.sh fc fc_rl
+
+python train.py --cfg configs/fc_rl.yml --id fc_rl
